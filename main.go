@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/joho/godotenv" // swagger embed files
+
 	// gin-swagger middleware
 	"github.com/swaggo/swag/example/basic/docs"
 )
@@ -34,5 +35,7 @@ func main() {
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 	r := routes.SetupRouter(db)
+
 	r.Run()
+
 }
