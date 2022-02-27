@@ -1,7 +1,6 @@
-package photo
+package domain
 
 import (
-	"FinalProjectGolangH8/comment"
 	"time"
 )
 
@@ -12,8 +11,9 @@ type (
 		Caption   string
 		Photo_url string `gorm:"not null" validate:"required"`
 		User_id   int
-		Comments  []comment.Comment `gorm:"foreignKey:Photo_id;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+		Comments  []Comment `gorm:"foreignKey:Photo_id;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 		CreatedAt time.Time
 		UpdatedAt time.Time
+		User      User
 	}
 )

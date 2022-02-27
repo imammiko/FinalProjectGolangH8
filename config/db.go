@@ -1,10 +1,8 @@
 package config
 
 import (
-	"FinalProjectGolangH8/comment"
-	"FinalProjectGolangH8/photo"
-	socialmedia "FinalProjectGolangH8/socialMedia"
-	"FinalProjectGolangH8/user"
+	"FinalProjectGolangH8/domain"
+
 	"FinalProjectGolangH8/utils"
 	"os"
 
@@ -40,7 +38,7 @@ func ConnectDataBase() *gorm.DB {
 			panic(err.Error())
 		}
 
-		db.AutoMigrate(&user.User{}, &socialmedia.SocialMedia{}, &photo.Photo{}, &comment.Comment{})
+		db.AutoMigrate(&domain.User{}, &domain.SocialMedia{}, &domain.Photo{}, &domain.Comment{})
 
 		return db
 	}

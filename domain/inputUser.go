@@ -1,4 +1,4 @@
-package user
+package domain
 
 type RegisterUserInput struct {
 	Age      int    `json:"age" binding:"required,gte=8"`
@@ -13,7 +13,6 @@ type LoginUserInput struct {
 }
 
 type UpdateUserInput struct {
-	ID       int
 	Email    string `json:"email"`
 	Username string `json:"username"`
 }

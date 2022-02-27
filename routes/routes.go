@@ -2,12 +2,15 @@ package routes
 
 import (
 	"FinalProjectGolangH8/auth"
+	"FinalProjectGolangH8/comment"
 	"FinalProjectGolangH8/handler"
+	"FinalProjectGolangH8/photo"
+	socialmedia "FinalProjectGolangH8/socialMedia"
 	"FinalProjectGolangH8/user"
-	"net/http"
-	"strings"
+	"fmt"
 
-	"github.com/dgrijalva/jwt-go"
+	md "FinalProjectGolangH8/middleware"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
@@ -20,46 +23,53 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		c.Set("db", db)
 	})
 	userRepository := user.NewRepository(db)
+	photoRepository := photo.NewRepository(db)
+	commentRepository := comment.NewRepository(db)
+	socialMediaRepository := socialmedia.NewRepository(db)
+	socialMediaRepository.FindAll()
+
 	userService := user.NewService(userRepository)
+	photoService := photo.NewService(photoRepository)
+	commentService := comment.NewService(commentRepository)
+	socialmediaService := socialmedia.NewService(socialMediaRepository, photoRepository)
+
 	authService := auth.NewService()
 	userHandler := handler.NewUserHandler(userService, authService)
+	photoHandler := handler.NewPhotoHandler(photoService, userService)
+	socialMediaHandler := handler.NewSocialMediaHandler(socialmediaService, userService)
+
+	commentHandler := handler.NewCommentHandler(commentService, userService, photoService)
+
+	r.GET("/foo", func(c *gin.Context) {
+		fmt.Println("The URL: ", c.Request.URL.Path)
+	})
+	authz := md.AuthzMiddleware(photoService, commentService, socialmediaService)
+
 	userRoute := r.Group("/users")
 	userRoute.POST("/register", userHandler.RegisterUser)
 	userRoute.POST("/login", userHandler.Login)
-	userRoute.PUT("", authMiddleware(authService, userService), userHandler.UpdateUser)
-	userRoute.DELETE("", authMiddleware(authService, userService), userHandler.DeleteUser)
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	return r
-}
+	userRoute.PUT("", md.AuthMiddleware(authService, userService), userHandler.UpdateUser)
+	userRoute.DELETE("", md.AuthMiddleware(authService, userService), userHandler.DeleteUser)
 
-func authMiddleware(authService auth.Service, userService user.Service) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		authHeader := c.GetHeader("Authorization")
-		if !strings.Contains(authHeader, "Bearer") {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "token not found"})
-			return
-		}
-		tokenString := ""
-		arrayToken := strings.Split(authHeader, " ")
-		if len(arrayToken) == 2 {
-			tokenString = arrayToken[1]
-		}
-		token, err := authService.ValidateToken(tokenString)
-		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unathorized"})
-			return
-		}
-		claim, ok := token.Claims.(jwt.MapClaims)
-		if !ok || !token.Valid {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unathorized"})
-			return
-		}
-		userID := int(claim["user_id"].(float64))
-		user, err := userService.GetUserByID(userID)
-		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unathorized"})
-			return
-		}
-		c.Set("currentUser", user)
-	}
+	photoRoute := r.Group("/photos")
+	photoRoute.POST("", md.AuthMiddleware(authService, userService), photoHandler.CreatePhoto)
+	photoRoute.GET("", md.AuthMiddleware(authService, userService), photoHandler.GetAll)
+	photoRoute.PUT("/:id", md.AuthMiddleware(authService, userService), authz, photoHandler.PutPhoto)
+	photoRoute.DELETE("/:id", md.AuthMiddleware(authService, userService), authz, photoHandler.DeletePhoto)
+
+	commentRoute := r.Group("/comments")
+	commentRoute.POST("", md.AuthMiddleware(authService, userService), commentHandler.CreateComment)
+	commentRoute.GET("", md.AuthMiddleware(authService, userService), commentHandler.GetAll)
+	commentRoute.PUT("/:id", md.AuthMiddleware(authService, userService), authz, commentHandler.PutComment)
+	commentRoute.DELETE("/:id", md.AuthMiddleware(authService, userService), authz, commentHandler.DeleteComment)
+
+	socialMedia := r.Group("/socialmedias")
+	socialMedia.POST("", md.AuthMiddleware(authService, userService), socialMediaHandler.CreateSocialMedia)
+	socialMedia.GET("", md.AuthMiddleware(authService, userService), socialMediaHandler.GetAll)
+	socialMedia.PUT("/:id", md.AuthMiddleware(authService, userService), authz, socialMediaHandler.PutSocialMedia)
+	socialMedia.DELETE("/:id", md.AuthMiddleware(authService, userService), authz, socialMediaHandler.DeleteSocialMedia)
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	return r
 }

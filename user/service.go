@@ -1,17 +1,18 @@
 package user
 
 import (
+	"FinalProjectGolangH8/domain"
 	"errors"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 type Service interface {
-	RegisterUser(input RegisterUserInput) (User, error)
-	Login(input LoginUserInput) (User, error)
-	UpdateUser(input UpdateUserInput) (User, error)
-	GetUserByID(ID int) (User, error)
-	DeleteUser(id int) (User, error)
+	RegisterUser(input domain.RegisterUserInput) (domain.User, error)
+	Login(input domain.LoginUserInput) (domain.User, error)
+	UpdateUser(input domain.UpdateUserInput, id int) (domain.User, error)
+	GetUserByID(ID int) (domain.User, error)
+	DeleteUser(id int) (domain.User, error)
 }
 
 type service struct {
@@ -24,8 +25,8 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
-	user := User{}
+func (s *service) RegisterUser(input domain.RegisterUserInput) (domain.User, error) {
+	user := domain.User{}
 	user.Age = input.Age
 	user.Email = input.Email
 	user.Password = input.Password
@@ -43,7 +44,7 @@ func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
 
 }
 
-func (s *service) Login(input LoginUserInput) (User, error) {
+func (s *service) Login(input domain.LoginUserInput) (domain.User, error) {
 	email := input.Email
 	password := input.Password
 	user, err := s.repository.FindByEmail(email)
@@ -60,8 +61,8 @@ func (s *service) Login(input LoginUserInput) (User, error) {
 	return user, nil
 }
 
-func (s *service) UpdateUser(input UpdateUserInput) (User, error) {
-	user, err := s.repository.FindByID(input.ID)
+func (s *service) UpdateUser(input domain.UpdateUserInput, id int) (domain.User, error) {
+	user, err := s.repository.FindByID(id)
 	if err != nil {
 		return user, err
 	}
@@ -74,7 +75,7 @@ func (s *service) UpdateUser(input UpdateUserInput) (User, error) {
 	return updateUser, nil
 }
 
-func (s *service) GetUserByID(ID int) (User, error) {
+func (s *service) GetUserByID(ID int) (domain.User, error) {
 	user, err := s.repository.FindByID(ID)
 	if err != nil {
 		return user, err
@@ -85,7 +86,7 @@ func (s *service) GetUserByID(ID int) (User, error) {
 	return user, nil
 }
 
-func (s *service) DeleteUser(id int) (User, error) {
+func (s *service) DeleteUser(id int) (domain.User, error) {
 	user, err := s.repository.DeleteUser(id)
 	if err != nil {
 		return user, err
