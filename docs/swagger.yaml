@@ -506,14 +506,25 @@ paths:
       tags:
       - Photos
     post:
+      consumes:
+      - multipart/form-data
       description: Create barerToken.
       parameters:
-      - description: the body to Create a new Photo
-        in: body
-        name: Body
+      - description: title data
+        in: formData
+        name: title
         required: true
-        schema:
-          $ref: '#/definitions/domain.InputPhotos'
+        type: string
+      - description: file Image Url
+        in: formData
+        name: photo_url
+        required: true
+        type: file
+      - description: caption data
+        in: formData
+        name: caption
+        required: true
+        type: string
       - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
         in: header
         name: Authorization
@@ -558,17 +569,28 @@ paths:
       tags:
       - Photos
     put:
+      consumes:
+      - multipart/form-data
       description: Update Photo by id.
       parameters:
-      - description: the body to update a new Photo
-        in: body
-        name: Body
-        required: true
-        schema:
-          $ref: '#/definitions/domain.InputPhotos'
       - description: Photo id
         in: path
         name: id
+        required: true
+        type: string
+      - description: title data
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: file Image Url
+        in: formData
+        name: photo_url
+        required: true
+        type: file
+      - description: caption data
+        in: formData
+        name: caption
         required: true
         type: string
       - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
@@ -644,7 +666,7 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: Photo id
+      - description: SocialMedia id
         in: path
         name: id
         required: true

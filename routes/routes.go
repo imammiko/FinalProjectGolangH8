@@ -52,9 +52,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	userRoute.DELETE("", md.AuthMiddleware(authService, userService), userHandler.DeleteUser)
 
 	photoRoute := r.Group("/photos")
-	photoRoute.POST("", md.AuthMiddleware(authService, userService), photoHandler.CreatePhoto)
+	photoRoute.POST("", md.AuthMiddleware(authService, userService), photoHandler.CreatePhotoSendCloud)
 	photoRoute.GET("", md.AuthMiddleware(authService, userService), photoHandler.GetAll)
-	photoRoute.PUT("/:id", md.AuthMiddleware(authService, userService), authz, photoHandler.PutPhoto)
+	photoRoute.PUT("/:id", md.AuthMiddleware(authService, userService), authz, photoHandler.PutPhotoImage)
 	photoRoute.DELETE("/:id", md.AuthMiddleware(authService, userService), authz, photoHandler.DeletePhoto)
 
 	commentRoute := r.Group("/comments")

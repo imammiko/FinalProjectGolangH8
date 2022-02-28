@@ -229,6 +229,9 @@ const docTemplate_swagger = `{
                     }
                 ],
                 "description": "Create barerToken.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -238,13 +241,25 @@ const docTemplate_swagger = `{
                 "summary": "Create Photo.",
                 "parameters": [
                     {
-                        "description": "the body to Create a new Photo",
-                        "name": "Body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/domain.InputPhotos"
-                        }
+                        "type": "string",
+                        "description": "title data",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "file Image Url",
+                        "name": "photo_url",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "caption data",
+                        "name": "caption",
+                        "in": "formData",
+                        "required": true
                     },
                     {
                         "type": "string",
@@ -272,6 +287,9 @@ const docTemplate_swagger = `{
                     }
                 ],
                 "description": "Update Photo by id.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -281,19 +299,31 @@ const docTemplate_swagger = `{
                 "summary": "Update Photo.",
                 "parameters": [
                     {
-                        "description": "the body to update a new Photo",
-                        "name": "Body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/domain.InputPhotos"
-                        }
-                    },
-                    {
                         "type": "string",
                         "description": "Photo id",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "title data",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "file Image Url",
+                        "name": "photo_url",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "caption data",
+                        "name": "caption",
+                        "in": "formData",
                         "required": true
                     },
                     {
@@ -501,7 +531,7 @@ const docTemplate_swagger = `{
                     },
                     {
                         "type": "string",
-                        "description": "Photo id",
+                        "description": "SocialMedia id",
                         "name": "id",
                         "in": "path",
                         "required": true
