@@ -1,0 +1,808 @@
+definitions:
+  domain.Comment:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo:
+        $ref: '#/definitions/domain.Photo'
+      photo_id:
+        type: integer
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/domain.User'
+      user_id:
+        type: integer
+    required:
+    - message
+    type: object
+  domain.CommentCreate:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo_id:
+        type: integer
+      user_id:
+        type: integer
+    required:
+    - message
+    type: object
+  domain.CommentGet:
+    properties:
+      Photo:
+        $ref: '#/definitions/domain.CommentPhotoGet'
+      User:
+        $ref: '#/definitions/domain.CommentUserGet'
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo_id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  domain.CommentPhotoGet:
+    properties:
+      caption:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  domain.CommentPut:
+    properties:
+      id:
+        type: integer
+      message:
+        type: string
+      photo_id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  domain.CommentUserGet:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  domain.InputCommentCreate:
+    properties:
+      message:
+        type: string
+      photo_id:
+        type: integer
+    required:
+    - message
+    type: object
+  domain.InputPhotos:
+    properties:
+      caption:
+        type: string
+      photo_url:
+        type: string
+      title:
+        type: string
+    required:
+    - photo_url
+    - title
+    type: object
+  domain.InputSocialMedia:
+    properties:
+      name:
+        type: string
+      social_media_url:
+        type: string
+    required:
+    - name
+    - social_media_url
+    type: object
+  domain.LoginUserInput:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  domain.MessagePhoto:
+    properties:
+      message:
+        type: string
+    type: object
+  domain.Photo:
+    properties:
+      caption:
+        type: string
+      comments:
+        items:
+          $ref: '#/definitions/domain.Comment'
+        type: array
+      createdAt:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/domain.User'
+      user_id:
+        type: integer
+    required:
+    - photo_url
+    - title
+    type: object
+  domain.PhotoOutputCreate:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  domain.PhotoOutputGet:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      user:
+        $ref: '#/definitions/domain.UserFormat'
+      user_id:
+        type: integer
+    type: object
+  domain.RegisterUserInput:
+    properties:
+      age:
+        minimum: 8
+        type: integer
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        type: string
+    required:
+    - age
+    - email
+    - password
+    - username
+    type: object
+  domain.SocialMedia:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_Url:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/domain.User'
+      userId:
+        type: integer
+    required:
+    - name
+    - social_media_Url
+    type: object
+  domain.SocialMediaMessage:
+    properties:
+      message:
+        type: string
+    type: object
+  domain.SocialMediaOutputCreate:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  domain.SocialMediaOutputGet:
+    properties:
+      User:
+        $ref: '#/definitions/domain.SocialMediaaUSer'
+      createdAt:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updatedAt:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  domain.SocialMediaOutputPut:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  domain.SocialMediaaUSer:
+    properties:
+      id:
+        type: integer
+      social_media_url:
+        type: string
+      username:
+        type: string
+    type: object
+  domain.UpdateComment:
+    properties:
+      message:
+        type: string
+    required:
+    - message
+    type: object
+  domain.UpdateUserInput:
+    properties:
+      email:
+        type: string
+      username:
+        type: string
+    type: object
+  domain.User:
+    properties:
+      age:
+        minimum: 8
+        type: integer
+      comments:
+        items:
+          $ref: '#/definitions/domain.Comment'
+        type: array
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        minLength: 6
+        type: string
+      photos:
+        items:
+          $ref: '#/definitions/domain.Photo'
+        type: array
+      socialMedia:
+        items:
+          $ref: '#/definitions/domain.SocialMedia'
+        type: array
+      updatedAt:
+        type: string
+      username:
+        type: string
+    required:
+    - age
+    - email
+    - password
+    - username
+    type: object
+  domain.UserFormat:
+    properties:
+      email:
+        type: string
+      username:
+        type: string
+    type: object
+  domain.UserFormatter:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  domain.UserUpdateFormatter:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+paths:
+  /comments:
+    get:
+      description: Create barerToken.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.CommentGet'
+            type: array
+      security:
+      - BearerToken: []
+      summary: Get All Comments.
+      tags:
+      - Comments
+    post:
+      description: Create barerToken.
+      parameters:
+      - description: the body to Create a new Photo
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.InputCommentCreate'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.CommentCreate'
+      security:
+      - BearerToken: []
+      summary: Create Comment.
+      tags:
+      - Comments
+  /comments/{id}:
+    delete:
+      description: Delete a Comment by id.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Comment id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.MessagePhoto'
+      security:
+      - BearerToken: []
+      summary: Delete one Comment.
+      tags:
+      - Comments
+    put:
+      description: Update Comments by id.
+      parameters:
+      - description: the body to update a new Photo
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateComment'
+      - description: Comment id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.CommentPut'
+      security:
+      - BearerToken: []
+      summary: Update Comments.
+      tags:
+      - Comments
+  /photos:
+    get:
+      description: Create barerToken.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.PhotoOutputGet'
+            type: array
+      security:
+      - BearerToken: []
+      summary: Get All photo.
+      tags:
+      - Photos
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create barerToken.
+      parameters:
+      - description: title data
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: file Image Url
+        in: formData
+        name: photo_url
+        required: true
+        type: file
+      - description: caption data
+        in: formData
+        name: caption
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.PhotoOutputCreate'
+      security:
+      - BearerToken: []
+      summary: Create Photo.
+      tags:
+      - Photos
+  /photos/{id}:
+    delete:
+      description: Delete a Photo by id.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Photo id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.MessagePhoto'
+      security:
+      - BearerToken: []
+      summary: Delete one Photo.
+      tags:
+      - Photos
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update Photo by id.
+      parameters:
+      - description: Photo id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: title data
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: file Image Url
+        in: formData
+        name: photo_url
+        required: true
+        type: file
+      - description: caption data
+        in: formData
+        name: caption
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Photo'
+      security:
+      - BearerToken: []
+      summary: Update Photo.
+      tags:
+      - Photos
+  /socialmedias:
+    get:
+      description: Create barerToken.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.SocialMediaOutputGet'
+            type: array
+      security:
+      - BearerToken: []
+      summary: Get All SocialMedia.
+      tags:
+      - SocialMedias
+    post:
+      description: Create barerToken.
+      parameters:
+      - description: the body to Create a new SocialMedia
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.InputSocialMedia'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.SocialMediaOutputCreate'
+      security:
+      - BearerToken: []
+      summary: Create SocialMedia.
+      tags:
+      - SocialMedias
+  /socialmedias/{id}:
+    delete:
+      description: Delete a SocialMedia by id.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: SocialMedia id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SocialMediaMessage'
+      security:
+      - BearerToken: []
+      summary: Delete one SocialMedia.
+      tags:
+      - SocialMedias
+    put:
+      description: Update Photo by id.
+      parameters:
+      - description: the body to update a new Photo
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.InputSocialMedia'
+      - description: SocialMedia id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SocialMediaOutputPut'
+      security:
+      - BearerToken: []
+      summary: Update SocialMedias.
+      tags:
+      - SocialMedias
+  /users:
+    delete:
+      description: Delete a Product by Token id.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+      security:
+      - BearerToken: []
+      summary: Delete one User.
+      tags:
+      - Users
+    put:
+      description: Update barerToken.
+      parameters:
+      - description: the body to update a new users
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateUserInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserUpdateFormatter'
+      security:
+      - BearerToken: []
+      summary: Update user.
+      tags:
+      - Users
+  /users/login:
+    post:
+      description: Login a user from public access.
+      parameters:
+      - description: the body to Login a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LoginUserInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login a user.
+      tags:
+      - Users
+  /users/register:
+    post:
+      description: registering a user from public access.
+      parameters:
+      - description: the body to register a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.RegisterUserInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.UserFormatter'
+      summary: Register a user.
+      tags:
+      - Users
+swagger: "2.0"
